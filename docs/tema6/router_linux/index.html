@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Equipo como router - Planificació i Administració de Xarxes</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "M\u00e1quina Linux actuando como router", url: "#_top", children: [
+              {title: "C\u00f3mo incluir una m\u00e1quina virtual en GNS3", url: "#como-incluir-una-maquina-virtual-en-gns3" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../tarea1/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../tarea1/" class="btn btn-xs btn-link">
+        Tarea 1 Routers en GNS3
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../dhcp/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../dhcp/" class="btn btn-xs btn-link">
+        DHCP
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h2 id="maquina-linux-actuando-como-router">Máquina Linux actuando como router</h2>
+<p>En ciertas ocasiones nos va a ser de mucha utilidad tener una máquina que se encargue de hacer de router entre una red y otra. Un ejemplo lo podemos tener en una sala de formación en una empresa donde el ordenador del profesor actúa de router para el resto de ordenadores de la sala, independizando esa sala del resto de la empresa pero permitiéndoles la salida hacia fuera, así como la gestión de otros parámetros que veremos posteriormente.</p>
+<p>Para configurar un equipo Linux como router necesitamos realizar unos pasos muy sencillos:</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Evidentemente, lo más importante es tener dos tarjetas de red, cada una de ellas conectada a una de las redes que queremos unir</p>
+</div>
+<ol>
+<li>Configurar sus interfaces</li>
+<li>Decirle al sistema que va a actuar como un router</li>
+<li>Hacer el enmascaramiento de la red interna hacia fuera</li>
+</ol>
+<p>¿Qué significa todo esto?</p>
+<ul>
+<li>El <em>paso 1</em> lo tenemos claro, configuramos cada interfaz como corresponda en base a la red en la que está conectada</li>
+<li>El <em>paso 2</em> es tan sencillo como modificar un parámetro del sistema. Debemos editar el fichero <em>/etc/sysctl.conf</em> y modificar el valor de <em>net.ipv4.ip_forward</em> para que valga 1:</li>
+</ul>
+<pre><code>net.ipv4.ip_forward = 1
+</code></pre>
+<ul>
+<li>Para el <em>paso 3</em> debemos añadir una regla de <em>iptables</em> para decirle que realiza dicho enmascaramiento:</li>
+</ul>
+<pre><code>iptables -t nat -A POSTROUTING -s IP_RED_INTERNA/MASCARA -o INTERFAZ_EXTERNA -j SNAT --to IP_INTERFAZ_EXTERNA
+</code></pre>
+<p><em>IP_RED_ITERNA/MASCARA</em> se refiere a la dirección IP y la máscara de la red que va a tener como puerta de enlace la máquina Linux, es decir, en nuestro ejemplo sería la direcicón de la red del aula de formación.
+<em>INTERFAZ_EXTERNA</em> se refiere al nombre de la interfaz que está conectada a la otra red.
+<em>IP_INTERFAZ_EXTERNA</em> se refiere a la dirección IP de dicha interfaz.</p>
+<p>Si no conociésemos la ip de la interfaz “externa” o fuese dinámica, usaríamos este otro comando:</p>
+<pre><code>iptables -t nat -A POSTROUTING -s IP_RED_INTERNA/MASCARA -o INTERFAZ_EXTERNA -j MASQUERADE
+</code></pre>
+<h3 id="como-incluir-una-maquina-virtual-en-gns3">Cómo incluir una máquina virtual en GNS3</h3>
+<p>Para poder comprobar el funcionamiento de una máquina Linux como router, podemos configurarla en una máquina virtual e incluirla en uno de nuestros proyectos de GNS3 en los que simularemos las dos redes que interconecta.</p>
+<p>Para ello se siguen estos pasos:</p>
+<ul>
+<li>Vamos al menú <em>Edit--&gt;Preferences--&gt;VirtualBox--&gt;VirtualBox VMs</em></li>
+<li>Añadimos la máquina virtual como una plantilla</li>
+</ul>
+<p>Una vez hecho esto ya podemos añadir esa máquina a nuestro proyecto.</p>
+<div class="admonition warning">
+<p class="admonition-title">OJO</p>
+<p>Tendremos que marcar la casilla correspondiente para que GNS3 se encargue de administrar las interfaces de red y así poder añadir las que necesitemos y conectarlas a las redes internas de GNS3</p>
+</div>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../tarea1/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../tarea1/" class="btn btn-xs btn-link">
+        Tarea 1 Routers en GNS3
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../dhcp/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../dhcp/" class="btn btn-xs btn-link">
+        DHCP
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>

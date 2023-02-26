@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Routers en GNS3 - Planificació i Administració de Xarxes</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Configuraci\u00f3n de un router en GNS3", url: "#_top", children: [
+          ]},
+          {title: "Operaciones a realizar en el router", url: "#operaciones-a-realizar-en-el-router", children: [
+              {title: "Configurar las interfaces", url: "#configurar-las-interfaces" },
+              {title: "Configurar las tablas de rutas", url: "#configurar-las-tablas-de-rutas" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../dhcp/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../dhcp/" class="btn btn-xs btn-link">
+        DHCP
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../tablas/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../tablas/" class="btn btn-xs btn-link">
+        Tablas de rutas
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h2 id="configuracion-de-un-router-en-gns3">Configuración de un router en GNS3</h2>
+<p>GNS3 permite añadir diferentes imágenes de routers para poder configurarlos en nuestros proyectos.</p>
+<p>Nosotros vamos a trabajar con MikroTik CHR. Para instalarlo debemos seguir tres pasos:</p>
+<ul>
+<li>Descargar el fichero del appliance</li>
+<li>Descargar los ficheros de una de las versiones soportadas (usaremos la más actual)</li>
+<li>Importar en GNS el fichero .gns3a</li>
+</ul>
+<p>Tenemos las instrucciones a seguir en este enlace:</p>
+<p>https://gns3.com/marketplace/appliances/mikrotik-cloud-hosted-router</p>
+<h2 id="operaciones-a-realizar-en-el-router">Operaciones a realizar en el router</h2>
+<p>Vamos a manejar el router mediante RouterOS, un sistema muy sencillo de gestionar que utilizan los routers MikroTik. En principio vamos a ver dos acciones que tendremos que realizar y, más adelante, ampliaremos con otras funciones.
+RouterOS utiliza una especie de sistema de ficheros similar a la estructura de un sistema Linux. Para realizar las acciones de configuración, nos situaremos en el directorio correspondiente, como veremos a continuación.</p>
+<h3 id="configurar-las-interfaces">Configurar las interfaces</h3>
+<p>Para configurar las interfaces debemos movernos al directorio correspondiente a la configuración de interfaces (/ip/address) y allí utilizar el comando correspondiente para configurar una interfaz. En dicho comando indicaremos la IP que queremos asignar, la máscara y la interfaz que estamos configurando. 
+Un ejemplo para ocnfigurar la interfaz ether1 con la IP 192.168.1.13 y máscara /24 sería el siguiente:</p>
+<pre><code>/ip/address
+add address=192.168.1.13/24 interface=ether1
+</code></pre>
+<h3 id="configurar-las-tablas-de-rutas">Configurar las tablas de rutas</h3>
+<p>Para configurar las tabals de rutas debemos irnos al directorio /ip/route y ejecutar el comando correspondiente para añadir cada una de las rutas. El comando esbásicamente lo mismo que aparece en las tablas que diseñamos anteriormente pero incluso más sencillo, ya que no hace falta indicar la interfaz, pues el router deduce cuál es a partir de las IPs de la tabla. Veamos un ejemplo:</p>
+<pre><code>/ip/route
+add dst-address=172.29.0.0/16 gateway=10.0.0.1
+</code></pre>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../dhcp/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../dhcp/" class="btn btn-xs btn-link">
+        DHCP
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../tablas/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../tablas/" class="btn btn-xs btn-link">
+        Tablas de rutas
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>

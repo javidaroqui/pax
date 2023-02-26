@@ -1,0 +1,27 @@
+site_name: Planificació i Administració de Xarxes
+docs_dir: 'md'
+site_dir: 'docs'  
+theme: windmill
+markdown_extensions: 
+  - admonition
+nav:
+  - Home: index.md
+  - Tema 1: todo.md
+  - Tema 2: todo.md
+  - Tema 3: todo.md
+  - Tema 4: todo.md
+  - Tema 5: todo.md
+  - Tema 6:
+    - Recursos:
+      - Tablas de rutas: tema6/tablas.md
+      - Routers en GNS3: tema6/routers_gns3.md
+      - DHCP: tema6/dhcp.md
+      - Equipo como router: tema6/router_linux.md
+    - Tareas:
+      - Tarea 1 Routers en GNS3: tema6/tarea1.md
+      - Tarea 2 El IES: tema6/tarea2.md
+      - Tarea 3 Tablas de rutas: tema6/tarea3.md
+      - Tarea 4 Rutas en el IES: tema6/tarea4.md
+      - Tarea 5 DHCP: tema6/tarea5.md
+      - Tarea 6 Xubuntu como router: tema6/tarea6.md
+  - About: about.md

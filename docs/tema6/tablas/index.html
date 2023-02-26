@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Tablas de rutas - Planificació i Administració de Xarxes</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Encaminamiento", url: "#_top", children: [
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../routers_gns3/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../routers_gns3/" class="btn btn-xs btn-link">
+        Routers en GNS3
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../../todo/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../../todo/" class="btn btn-xs btn-link">
+        Tema 5
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h2 id="encaminamiento">Encaminamiento</h2>
+<ul>
+<li>Los routers operan de manera similar a los conmutadores, ya que también
+filtran el tráfico de la red</li>
+<li>En lugar de hacerlo según las direcciones físicas (MAC) lo hacen en base a
+las direcciones lógicas (direcciones IP)</li>
+<li>La función de encaminamiento se realiza en la capa de Red del modelo OSI</li>
+<li>Utilizan una tabla de encaminamiento y una o varias métricas de red</li>
+<li>Las tablas de encaminamiento pueden configurarse:<ul>
+<li><strong>Estáticas</strong> → programadas por el administrador de red</li>
+<li><strong>Dinámicas</strong> → mediante un protocolo de enrutamiento</li>
+<li><strong>Híbridas</strong> → son dinámicas pero el administrador puede añadir alguna
+entrada de forma manual</li>
+</ul>
+</li>
+</ul>
+<p>Supongamos que tenemos este esquema de red</p>
+<p><img alt="" src="../img/tablas1.png" /></p>
+<p>El PC1 tendría la siguiente tabla de encaminamiento</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>Equipo</strong></th>
+<th align="center"><strong>Destino</strong></th>
+<th align="center"><strong>Máscara</strong></th>
+<th align="center"><strong>Gateway</strong></th>
+<th align="center"><strong>Interfaz</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>PC1</strong></td>
+<td align="center">127.0.0.1</td>
+<td align="center">255.0.0.0</td>
+<td align="center">*</td>
+<td align="center">lo</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">192.168.1.0</td>
+<td align="center">255.255.255.0</td>
+<td align="center">*</td>
+<td align="center">eth1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">*</td>
+<td align="center">*</td>
+<td align="center">192.168.1.1</td>
+<td align="center">eth1</td>
+</tr>
+</tbody>
+</table>
+<p>El Router1 tendría la seiguiente tabla de encaminamiento</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>Equipo</strong></th>
+<th align="center"><strong>Destino</strong></th>
+<th align="center"><strong>Máscara</strong></th>
+<th align="center"><strong>Gateway</strong></th>
+<th align="center"><strong>Interfaz</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>Router1</strong></td>
+<td align="center">192.168.1.0</td>
+<td align="center">255.255.255.0</td>
+<td align="center">*</td>
+<td align="center">eth0</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">172.16.25.0</td>
+<td align="center">255.255.255.0</td>
+<td align="center">*</td>
+<td align="center">eth1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">172.30.25.0</td>
+<td align="center">255.255.255.0</td>
+<td align="center">172.30.12.1</td>
+<td align="center">eth2</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">*</td>
+<td align="center">*</td>
+<td align="center">172.30.12.1</td>
+<td align="center">eth2</td>
+</tr>
+</tbody>
+</table>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../routers_gns3/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../routers_gns3/" class="btn btn-xs btn-link">
+        Routers en GNS3
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../../todo/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../../todo/" class="btn btn-xs btn-link">
+        Tema 5
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>

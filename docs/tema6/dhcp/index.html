@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>DHCP - Planificació i Administració de Xarxes</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Configuraci\u00f3n de servidor DHCP en router MikroTik", url: "#_top", children: [
+              {title: "Router DHCP", url: "#router-dhcp" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../router_linux/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../router_linux/" class="btn btn-xs btn-link">
+        Equipo como router
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../routers_gns3/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../routers_gns3/" class="btn btn-xs btn-link">
+        Routers en GNS3
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h2 id="configuracion-de-servidor-dhcp-en-router-mikrotik">Configuración de servidor DHCP en router MikroTik</h2>
+<p>Vamos a seguir los siguientes pasos para habilitar DHCP en un router y configurarlo de manera que podamos especificar el rango de direcciones que queremos asignar y algunas que queramos excluir para que no sean asignadas nunca.</p>
+<h3 id="router-dhcp">Router DHCP</h3>
+<p>En primer lugar debemos entrar en modo configuración de dhcp, por lo que nos movemos a </p>
+<pre><code>/ip/dhcp-server
+</code></pre>
+<p>y, desde ahí, ejecutaremos los siguientes comandos para inr configurando el servicio.
+A pesar de que podemos cambiar todos los parámetros con diferentes comandos, lo más cómodo para configurar el servidio desde cero es utilizar el asistente que incorpora RouterOS. Para ello ejecutamos el comando:</p>
+<pre><code>setup
+</code></pre>
+<p>Ahora nos irá preguntando una serie de parámetros. Vamos a verlos uno a uno:
+Lo primero que nos solicita es la interfaz en la que vamos a instalar el servidor DHCP.
+Elegiremos aquella que nos interese, por ejemplo <em>ether1</em></p>
+<pre><code>Select interface to run DHCP server on
+
+dhcp server interface: ether1
+</code></pre>
+<p>Ahora nos pregunta la red sobre la que va a trabajar el servicio. Le debemos especificar la dirección de red y máscara de la red en la que vamos a trabajar:</p>
+<pre><code>Select network for DHCP addresses
+
+dhcp address space: 192.168.0.0/24
+</code></pre>
+<p>Seguidamente nos solicita la dirección del gateway que va a asignar a los clientes. </p>
+<div class="admonition warning">
+<p class="admonition-title">OJO</p>
+<p>Podemos tener el servidor DHCP en un router diferente al que actúa como gateway para los equipos en la red.</p>
+</div>
+<pre><code>Select gateway for given network
+
+gateway for dhcp network: 192.168.0.1
+</code></pre>
+<p>Ahora nos solicita la pool de IPs disponibles para asignar. Aquí debemos indicar un rango de IPs que serán las que el servidor asigne, por lo que podemos organizarnos la red de manera que reservemos unos rangos para equipos con configuración estática y otro rango para equipos con DHCP.</p>
+<pre><code>Select pool of ip addresses given out by DHCP server
+
+addresses to give out: 192.168.0.100-192.168.0.199
+</code></pre>
+<p>Ahora nos solicita la dirección de los DNS. Los introduciremos separados por comas:</p>
+<pre><code>Select DNS servers
+
+dns servers: 10.239.3.7, 10.239.3.8
+</code></pre>
+<p>Finalmentenos solicitará el tiempo que va a durar la concesión. Podemos especificarlo en segundos, minutos, horas o días, añadiendo la letra correspondiente a continuación del número que introduzcamos (s,m,h,d)</p>
+<pre><code>Select lease time
+
+lease time: 3d
+</code></pre>
+<p>Con esto ya tendríamos la configuración aplicada.
+Como siempre, podemos ver cómo ha quedado mediante el comando:</p>
+<pre><code>print
+</code></pre>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../router_linux/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../router_linux/" class="btn btn-xs btn-link">
+        Equipo como router
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../routers_gns3/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../routers_gns3/" class="btn btn-xs btn-link">
+        Routers en GNS3
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>
