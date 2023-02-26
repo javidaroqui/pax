@@ -2,4 +2,4 @@
 
 Benvingut a la web del mòdul de Planificació i Administració de Xarxes.
 
-Ací trobaràs tot el material tant teòric com pràctic
+Ací trobaràs tot el material tant teòric com pràctic.
